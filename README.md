@@ -19,3 +19,4 @@ chess, ideally ones that reduce the likelihood of draws.
 - RL unsupervised self-play ML training and evaluation (some form of AlphaZero)
 - Command-line interface to simulate games with/without AI model strategies and other settings
 - Might need some code re-factoring to improve simulation speed, especially in the future to implement depth-limited search as a heauristic (depth > 10?)
+- Write docstrings for each class/function
