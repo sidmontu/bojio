@@ -1,7 +1,7 @@
 import sys, random, copy
 from pprint import pprint
-from Piece import Piece, PieceColors, PieceNames
-from utils import COLUMN_ALPHABETS
+from src.Piece import Piece, PieceColors, PieceNames
+from utils.utils import COLUMN_ALPHABETS
 from typing import Callable
 
 class Player :

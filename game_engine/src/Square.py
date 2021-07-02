@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from Piece import Piece, PieceColors, PieceNames
+from src.Piece import Piece, PieceColors, PieceNames
 
 @dataclass()
 class Square :
@@ -26,12 +26,4 @@ class Square :
         if self.is_unoccupied() :
             return ''
         return str('%s-%s' % (self.piece.color.name, self.piece.name.name))
-
-if __name__ == "__main__" :
-    s0 = Square(Piece(PieceColors.BLACK, PieceNames.QUEEN), (3,2))
-    s1 = Square(Piece(PieceColors.WHITE, PieceNames.KING))
-    s2 = Square()
-    s3 = Square()
-    s3.change_piece(Piece(PieceColors.BLACK, PieceNames.PAWN))
-
 

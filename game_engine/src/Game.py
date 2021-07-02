@@ -1,8 +1,8 @@
 import sys
-from os import makedirs
 from pprint import pprint
-from Board import Board
-from Player import Player
+
+from src.Board import Board
+from src.Player import Player
 
 class StandardGame :
     def __init__(self) -> None :
@@ -83,12 +83,4 @@ class StandardGame :
         for sid, piece in pieces1.items() :
             board.put_piece_by_sid(sid, piece)
         board.to_image(flipped = perspective == 'black', out_file = out_file)
-
-if __name__ == "__main__" :
-    game = StandardGame()
-    makedirs('out_files', exist_ok = True)
-    game.print_game_state('black', out_file = 'out_files/move_000.jpg')
-    for i in range(1,201) :
-        game.tick()
-        game.print_game_state('white', out_file = str('out_files/move_%03d.jpg' % (i)))
 

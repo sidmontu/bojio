@@ -1,9 +1,10 @@
-from PIL import Image, ImageDraw, ImageFont
-from Square import Square
-from Piece import Piece, PieceColors, PieceNames
-from pprint import pprint
-from utils import COLUMN_ALPHABETS
 import re, sys
+from PIL import Image, ImageDraw, ImageFont
+from pprint import pprint
+
+from src.Square import Square
+from src.Piece import Piece, PieceColors, PieceNames
+from utils.utils import COLUMN_ALPHABETS
 
 class Board :
     def __init__(self, board_config : str = 'standard') -> None :
@@ -218,8 +219,4 @@ class Board :
 
         # save the image
         img.save(out_file)
-
-if __name__ == "__main__" :
-    board = Board()
-    board.to_image(flipped = False)
 
