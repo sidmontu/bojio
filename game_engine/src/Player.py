@@ -38,6 +38,14 @@ class Player :
             if strategy == 'naive' : # pick a random move
                 idx = random.randint(0,len(moves)-1)
                 move = moves[idx]
+            if strategy == 'capturebot5000' : # prioritises captures over everything else
+                capture_moves = [move for move in moves if 'x' in move]
+                if len(capture_moves) > 0 :
+                    idx = random.randint(0,len(capture_moves)-1)
+                    move = capture_moves[idx]
+                else :
+                    idx = random.randint(0,len(moves)-1)
+                    move = moves[idx]
 
         # update global states based on picked move
         en_passant_offered = self.check_en_passant_offered(move, opp_pieces)

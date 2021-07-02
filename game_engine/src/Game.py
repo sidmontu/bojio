@@ -34,7 +34,7 @@ class StandardGame :
             player_pieces = self.board.get_pieces_by_color('white')
             opp_pieces = self.board.get_pieces_by_color('black')
             en_passant, castling, move = self.white_player.tick(\
-                    self.white_states, player_pieces, opp_pieces)
+                    self.white_states, player_pieces, opp_pieces, strategy = 'capturebot5000')
             self.black_states['en_passant'] = en_passant
             self.white_states['castling'] = castling
             self.to_move = 'black'
@@ -44,7 +44,7 @@ class StandardGame :
             player_pieces = self.board.get_pieces_by_color('black')
             opp_pieces = self.board.get_pieces_by_color('white')
             en_passant, castling, move = self.black_player.tick(\
-                    self.black_states, player_pieces, opp_pieces)
+                    self.black_states, player_pieces, opp_pieces, strategy = 'capturebot5000')
             self.white_states['en_passant'] = en_passant
             self.black_states['castling'] = castling
             self.to_move = 'white'
