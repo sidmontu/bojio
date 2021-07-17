@@ -25,6 +25,14 @@ class StandardGame :
         self.to_move = 'white'
         self.consecutive_non_capture_moves = 0
 
+    def play_bot_move(self, player: str) -> None :
+        if player == 'white' :
+            pass
+        pass
+
+    def play_move(self, player: str, move: str) -> None :
+        pass
+
     def tick(self) -> None :
         pprint('[Game-Tick-%d] %s to move:' % (self.move_num,self.to_move))
 

@@ -1,6 +1,6 @@
 # Chess
 
-![Python version](https://img.shields.io/badge/Python-3.9.4-brightgreen.svg)
+![Python version](https://img.shields.io/badge/Python-3.9-brightgreen.svg)
 
 Chess engine with AI players. Goal is to train the AI with latest research
 results (budget-AlphaZero). Long-term goal is to explore some wacky variants of
