@@ -5,7 +5,6 @@ language: python
 python:
   - "3.9"
 before_install:
-  - cd game_engine
   - pip install -U pip
   - pip install codecov
   - pip install poetry
