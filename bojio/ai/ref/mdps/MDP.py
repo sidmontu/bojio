@@ -1,27 +1,27 @@
 from abc import ABC, abstractmethod
 
-class MDP(ABC) :
+
+class MDP(ABC):
     @abstractmethod
-    def getStates() :
+    def getStates(self):
         pass
 
     @abstractmethod
-    def getStartState(self) :
+    def getStartState(self):
         pass
 
     @abstractmethod
-    def getTransitionStatesAndProbs(self, state, action) :
+    def getTransitionStatesAndProbs(self, state, action):
         pass
 
     @abstractmethod
-    def getReward(self, state, action, nextState) :
+    def getReward(self, state, action, nextState):
         pass
 
     @abstractmethod
-    def isTerminal(self, state) :
+    def isTerminal(self, state):
         pass
 
     @abstractmethod
     def getPossibleActions(self, state):
         pass
-
