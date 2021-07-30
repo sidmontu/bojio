@@ -1,4 +1,4 @@
-# Chess
+# Project Bojio
 
 ![Python version](https://img.shields.io/badge/Python-3.9-brightgreen.svg)
 

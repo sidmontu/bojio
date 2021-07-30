@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "bojio"
+version = "0.1.0"
+description = "Python-based chess project, with both game engine and AI bots."
+authors = ["Sid <sidmontu@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Pillow = "^8.3.1"
+typer = "^0.3.2"
+
+[tool.poetry.dev-dependencies]
+black = "^21.7b0"
+pytest = "^6.2.4"
+pylint = "^2.9.6"
+mypy = "^0.910"
+coverage = "^5.5"
+isort = "^5.9.3"
+
+[tool.poetry.scripts]
+play = "bin.play_game_bin:_main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+'''
