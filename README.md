@@ -1,6 +1,9 @@
 # Project Bojio
 
-![Python version](https://img.shields.io/badge/Python-3.9-brightgreen.svg)
+<p align="center">
+    <img src="https://img.shields.io/badge/Python-3.9-brightgreen.svg" alt="Python version">
+    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
 
 Chess engine with AI players. Goal is to train the AI with latest research
 results (budget-AlphaZero). Long-term goal is to explore some wacky variants of
