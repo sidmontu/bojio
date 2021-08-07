@@ -13,3 +13,16 @@ def test_empty_piece():
     piece = Piece()
     assert piece.color == PieceColors.EMPTY
     assert piece.name == PieceNames.EMPTY
+
+
+def test_piece_img_fpaths():
+    """
+    Ensure that each of the supported chess pieces have a non-empty img_fpath
+    attribute, and the img_fpath points to a file that actually exists within
+    the repo.
+    """
+
+    for color in PieceColors:
+        for name in PieceNames:
+            piece = Piece(color, name)
+            # if color == PieceColors.EMPTY:
