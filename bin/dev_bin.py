@@ -1,4 +1,4 @@
-from bojio.game_engine.core.Piece import Piece, PieceNames, PieceColors
+from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
 
 piece = Piece(PieceColors.BLACK, PieceNames.PAWN)
 piece1 = Piece(PieceColors.BLACK, PieceNames.PAWN)
@@ -8,6 +8,3 @@ print(hash(piece))
 print(hash(piece1))
 print("%r" % (piece))
 print(dir(piece))
-
-for piece in PieceNames:
-    print(piece)

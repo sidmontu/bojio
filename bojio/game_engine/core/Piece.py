@@ -3,8 +3,9 @@ Contains all the attributes necessary to implement the chess pieces in the game
 engine.
 """
 
-from enum import Enum, auto, unique
 from dataclasses import dataclass, field
+from enum import Enum, auto, unique
+
 from bojio.game_engine.utils.exceptions import IllegalPieceException
 
 
@@ -91,6 +92,7 @@ class Piece:
     _color: PieceColors = field(default=PieceColors.EMPTY)
     _name: PieceNames = field(default=PieceNames.EMPTY)
     _value: int = field(default=-1)
+    _img_fpath: str = field(default="")
 
     def __post_init__(self) -> None:
         """
@@ -152,6 +154,5 @@ class Piece:
         Custom dunder __repr__ method that includes img_fpath attribute.
         """
         return str(
-            "Piece(color=%r, name=%r), value=%r, img_fpath=%r"
-            % (self.color, self.name, self.value, self.img_fpath)
+            "Piece(color=%r, name=%r), value=%r, img_fpath=%r" % (self.color, self.name, self.value, self.img_fpath)
         )

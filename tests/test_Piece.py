@@ -1,10 +1,12 @@
 """
 Pytest unit tests for the chess Piece dataclass.
 """
+from os.path import isfile
+
 import pytest
+
 from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames, PieceValues
 from bojio.game_engine.utils.exceptions import IllegalPieceException
-from os.path import isfile
 
 
 def test_empty_piece():
@@ -39,17 +41,11 @@ def test_piece_img_fpaths_and_values():
             if (color == PieceColors.EMPTY and not name == PieceNames.EMPTY) or (
                 not color == PieceColors.EMPTY and name == PieceNames.EMPTY
             ):
+                err_str = "Illegal piece instantiated: "
+                err_str += f"Piece(color={color!r}, name={name!r}), value=-1, img_fpath=''"
                 with pytest.raises(IllegalPieceException) as exception_info:
                     piece = Piece(color, name)
-                assert str(
-                    exception_info.value
-                ) == "Illegal piece instantiated: Piece(color=%r, name=%r), value=%r, img_fpath=%r" % (
-                    color,
-                    name,
-                    -1,
-                    "",
-                )
-
+                assert str(exception_info.value) == err_str
             else:  # Rest of the pieces
 
                 piece = Piece(color, name)
@@ -70,3 +66,16 @@ def test_piece_values():
 
             piece = Piece(color, name)
             assert piece.value == PieceValues[name]
+
+
+def test_piece_print():
+    """
+    Test that the __str__ method prints expected.
+    """
+    for color in PieceColors:
+        for name in PieceNames:
+            if color == PieceColors.EMPTY or name == PieceNames.EMPTY:
+                continue
+
+            piece = Piece(color, name)
+            assert str(piece) == "%s %s" % (color.name, name.name)

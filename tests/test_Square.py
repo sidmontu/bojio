@@ -2,8 +2,9 @@
 Pytest unit tests for the Square dataclass.
 """
 import pytest
+
+from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
 from bojio.game_engine.core.Square import Square
-from bojio.game_engine.core.Piece import Piece, PieceNames, PieceColors
 
 
 def test_square_init():
@@ -12,10 +13,10 @@ def test_square_init():
     """
 
     sq = Square()
-    assert sq._piece == Piece()
-    assert sq._xy == (0, 0)
-    assert sq._square_id == "a1"
-    assert sq._annotate == True
+    assert sq.piece == Piece()
+    assert sq.xy == (0, 0)
+    assert sq.square_id == "a1"
+    assert sq.annotate
 
 
 def test_square_annotate():
@@ -26,9 +27,9 @@ def test_square_annotate():
         for y in range(1, 9):
             sq = Square(Piece(PieceColors.BLACK, PieceNames.PAWN), (x, y), f"{p}{y}")
             if x == 0 or y == 0:
-                assert sq._annotate
+                assert sq.annotate
             else:
-                assert not sq._annotate
+                assert not sq.annotate
 
 
 def test_square_equality():
@@ -46,10 +47,7 @@ def test_square_equality():
     # Test that comparing Square to another class object raises TypeError
     with pytest.raises(TypeError) as exception_info:
         _ = sq0 == Piece()
-    assert (
-        str(exception_info.value)
-        == "Cannot compare Square object to object of different type"
-    )
+    assert str(exception_info.value) == "Cannot compare Square object to object of different type"
 
 
 def test_square_is_unoccupied():
@@ -73,7 +71,7 @@ def test_square_change_piece():
     new_piece = Piece(PieceColors.BLACK, PieceNames.QUEEN)
     sq.change_piece(new_piece)
 
-    assert sq._piece == new_piece
+    assert sq.piece == new_piece
 
 
 def test_square_print():
@@ -84,10 +82,7 @@ def test_square_print():
     sq = Square(Piece(PieceColors.EMPTY, PieceNames.EMPTY), (0, 3), "a3")
 
     assert sq.print() == ""
-    assert str(sq) == "[%s,%s] EMPTY SQUARE" % (
-        ",".join(map(str, sq._xy)),
-        sq._square_id,
-    )
+    assert str(sq) == "[0,3,a3] EMPTY SQUARE"
 
     sq = Square(Piece(PieceColors.WHITE, PieceNames.KING), (0, 3), "a3")
     assert sq.print() == "WHITE-KING"

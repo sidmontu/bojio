@@ -84,14 +84,10 @@ class StandardGame:
         self.board.make_move(move, last_move_by)
         self.move_num += 1
 
-    def print_game_state(
-        self, perspective: str = "white", out_file: str = "board_position.jpg"
-    ) -> None:
+    def print_game_state(self, perspective: str = "white", out_file: str = "board_position.jpg") -> None:
         self.board.to_image(flipped=perspective == "black", out_file=out_file)
 
-    def print_game_state_debug(
-        self, pieces0: dict, pieces1: dict, perspective: str, out_file: str
-    ) -> None:
+    def print_game_state_debug(self, pieces0: dict, pieces1: dict, perspective: str, out_file: str) -> None:
         board = Board(board_config="empty")
         for sid, piece in pieces0.items():
             board.put_piece_by_sid(sid, piece)
