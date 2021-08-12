@@ -1,8 +1,14 @@
+"""
+Contains all the attributes necessary to implement the chess pieces in the game
+engine.
+"""
+
 from enum import Enum, auto, unique
 from dataclasses import dataclass, field
 from bojio.game_engine.utils.exceptions import IllegalPieceException
 
 
+# Enum of piece/player colors
 @unique
 class PieceColors(Enum):
     EMPTY = auto()
@@ -10,6 +16,7 @@ class PieceColors(Enum):
     WHITE = auto()
 
 
+# Enum of chess pieces
 @unique
 class PieceNames(Enum):
     EMPTY = auto()
@@ -21,7 +28,7 @@ class PieceNames(Enum):
     KING = auto()
 
 
-# Path to images of pieces as stored in assets folder
+# Path to images of chess pieces as stored in assets folder
 PieceImagePaths = {
     PieceNames.EMPTY: {PieceColors.EMPTY: ""},
     PieceNames.PAWN: {
@@ -50,7 +57,7 @@ PieceImagePaths = {
     },
 }
 
-# Piece values as commonly known in chess literature
+# Value of common chess pieces as commonly known in chess literature
 PieceValues = {
     PieceNames.EMPTY: -1,
     PieceNames.PAWN: 1,
@@ -77,12 +84,13 @@ class Piece:
     It is potentially dangerous to mix both types of equalities, so we disable
     natural ordering and restrict equality to testing with (1) above. The first
     equality test is conceptually more natural and useful than restricting
-    comparisons to piece values. Piece values can be accessed using the
-    class-method .get_value() instead.
+    comparisons to piece values. Piece values can be accessed using the class
+    property .value instead.
     """
 
     _color: PieceColors = field(default=PieceColors.EMPTY)
     _name: PieceNames = field(default=PieceNames.EMPTY)
+    _value: int = field(default=-1)
 
     def __post_init__(self) -> None:
         """
