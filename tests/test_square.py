@@ -3,8 +3,8 @@ Pytest unit tests for the Square dataclass.
 """
 import pytest
 
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
-from bojio.game_engine.core.Square import Square
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames
+from ch_ss.game_engine.core.square import Square
 
 
 def test_square_init():
@@ -14,7 +14,7 @@ def test_square_init():
 
     sq = Square()
     assert sq.piece == Piece()
-    assert sq.xy == (0, 0)
+    assert sq.x_y == (0, 0)
     assert sq.square_id == "a1"
     assert sq.annotate
 
@@ -34,7 +34,7 @@ def test_square_annotate():
 
 def test_square_equality():
     """
-    Test square equality is only based off xy coords.
+    Test square equality is only based off x_y coords.
     """
 
     sq0 = Square(Piece(PieceColors.BLACK, PieceNames.PAWN), (0, 3), "a3")

@@ -1,11 +1,11 @@
 import copy
+import pprint as pp
 import random
 import sys
-from pprint import pprint
 from typing import Callable
 
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
-from bojio.game_engine.utils.utils import COLUMN_ALPHABETS
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames
+from ch_ss.game_engine.utils.utils import COLUMN_ALPHABETS
 
 
 class Player:
@@ -566,7 +566,7 @@ class Player:
             elif self.name == "black":
                 direction = -1
             else:
-                pprint('Error: Please set player name to "white" or "black", currently: %s' % (self.name))
+                pp.pprint('Error: Please set player name to "white" or "black", currently: %s' % (self.name))
                 sys.exit()
 
             # flip if looking from opponent's point-of-view

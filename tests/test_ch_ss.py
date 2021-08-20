@@ -1,4 +1,4 @@
-from bojio import __version__
+from ch_ss import __version__
 
 
 def test_version():

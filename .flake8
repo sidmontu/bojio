@@ -1,4 +1,5 @@
 # TODO: Remove C901 eventually from ignore
+# TODO: Remove exclude for moves_explorer.py once ready
 [flake8]
 max-line-length = 120
 max-complexity = 10
@@ -8,6 +9,6 @@ exclude =
     .git,
     __pycache__,
     *.egg-info,
-    .nox,
     .pytest_cache,
-    .mypy_cache
+    .mypy_cache,
+    ch_ss/game_engine/core/moves_explorer.py,

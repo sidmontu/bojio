@@ -1,9 +1,9 @@
-# Project Bojio
+# Project ch-ss
 
 <p align="center">
     <img src="https://img.shields.io/badge/Python-3.9-brightgreen.svg" alt="Python version">
     <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-    <img src="https://travis-ci.com/sidmontu/bojio.svg?branch=master" alt="Build status">
+    <img src="https://travis-ci.com/sidmontu/ch-ss.svg?branch=master" alt="Build status">
 </p>
 
 Chess engine with AI players. Goal is to train the AI with latest research

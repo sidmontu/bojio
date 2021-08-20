@@ -5,8 +5,8 @@ from os.path import isfile
 
 import pytest
 
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames, PieceValues
-from bojio.game_engine.utils.exceptions import IllegalPieceException
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames, PieceValues
+from ch_ss.game_engine.utils.exceptions import IllegalPieceException
 
 
 def test_empty_piece():

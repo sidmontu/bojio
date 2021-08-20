@@ -1,4 +1,4 @@
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames
 
 piece = Piece(PieceColors.BLACK, PieceNames.PAWN)
 piece1 = Piece(PieceColors.BLACK, PieceNames.PAWN)

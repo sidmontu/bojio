@@ -1,12 +1,12 @@
+import pprint as pp
 import re
 import sys
-from pprint import pprint
 
 from PIL import Image, ImageDraw, ImageFont
 
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
-from bojio.game_engine.core.Square import Square
-from bojio.game_engine.utils.utils import COLUMN_ALPHABETS
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames
+from ch_ss.game_engine.core.square import Square
+from ch_ss.game_engine.utils.utils import COLUMN_ALPHABETS
 
 
 class Board:
@@ -14,7 +14,7 @@ class Board:
         sqs = {}
         for j in range(8):
             for i, alphabet in enumerate(COLUMN_ALPHABETS):
-                sq = Square(xy=(7 - j, i), square_id=alphabet + str(j + 1))
+                sq = Square(x_y=(7 - j, i), square_id=alphabet + str(j + 1))
                 sqs[alphabet + str(j + 1)] = sq
         self.squares = sqs
 
@@ -30,7 +30,7 @@ class Board:
         self.board_len = 800
         self.margin = 10
         self.colors = ["#23de74", "#f7f7d5"]
-        self.font = ImageFont.truetype("bojio/game_engine/assets/fonts/arial.ttf", 16)
+        self.font = ImageFont.truetype("ch_ss/game_engine/assets/fonts/arial.ttf", 16)
 
         # calculated settings for printing board image -- don't change this
         self.w, self.h = self.board_len + (self.margin * 2), self.board_len + (self.margin * 2)  # margin 10px each
@@ -161,7 +161,7 @@ class Board:
             self.put_piece_by_sid(sq_to, piece)
 
     def make_move(self, move: str, color: str) -> None:
-        pprint("Attempting to make move %s" % (move))
+        pp.pprint("Attempting to make move %s" % (move))
         if move[0] in ["R", "B", "N", "Q", "K"]:  # non-pawn moves
             self.make_non_pawn_moves(move)
         elif move == "O-O":  # castling move
@@ -192,7 +192,7 @@ class Board:
         for square_id, square in self.squares.items():
 
             # calculate (x,y) coordinates, and colors
-            i, j = square.xy
+            i, j = square.x_y
             if flipped:
                 top_left_x = margin + (7 - j) * square_len
                 top_left_y = margin + (7 - i) * square_len

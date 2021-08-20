@@ -4,7 +4,7 @@ Contains class description of a square on the chessboard.
 
 from dataclasses import dataclass, field
 
-from bojio.game_engine.core.Piece import Piece
+from ch_ss.game_engine.core.piece import Piece
 
 
 @dataclass(init=True, repr=True, eq=False, order=False, unsafe_hash=False, frozen=False)
@@ -14,7 +14,7 @@ class Square:
     is made of 64 squares, and each square contains attributes about its
     location, piece, ID, etc.
 
-    Squares should be compared by their xy coordinates, so we write our own
+    Squares should be compared by their x_y coordinates, so we write our own
     equality dunder method. There is no natural ordering between squares, so we
     disable ordering.
 
@@ -22,29 +22,29 @@ class Square:
     """
 
     piece: Piece = field(default=Piece())
-    xy: tuple[int, int] = field(default=(0, 0))
+    x_y: tuple[int, int] = field(default=(0, 0))
     square_id: str = "a1"
     annotate: bool = False
 
     def __post_init__(self) -> None:
         """
-        Assigns _annotate attribute correctly based on the xy coordinates of
+        Assigns _annotate attribute correctly based on the x_y coordinates of
         the square. The annotate property is helpful when printing the board,
         since we only want to print the square_id on select squares to minimize
         clutter.
         """
-        self.annotate = True if (self.xy[0] == 0 or self.xy[1] == 0) else False
+        self.annotate = self.x_y[0] == 0 or self.x_y[1] == 0
 
     def __str__(self) -> str:
         """
         Pretty-print the square, including when the square is empty.
         """
         if self.is_unoccupied():
-            return str("[%s,%s] EMPTY SQUARE" % (",".join(map(str, self.xy)), self.square_id))
+            return str("[%s,%s] EMPTY SQUARE" % (",".join(map(str, self.x_y)), self.square_id))
         return str(
             "[%s,%s] %s %s"
             % (
-                ",".join(map(str, self.xy)),
+                ",".join(map(str, self.x_y)),
                 self.square_id,
                 self.piece.color.name,
                 self.piece.name.name,
@@ -58,7 +58,7 @@ class Square:
         if not isinstance(other, Square):
             raise TypeError("Cannot compare Square object to object of different type")
 
-        return self.xy == other.xy
+        return self.x_y == other.x_y
 
     def print(self) -> str:
         """

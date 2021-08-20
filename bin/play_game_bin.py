@@ -2,7 +2,7 @@ from os import makedirs
 
 import typer
 
-from bojio.game_engine.core.Game import StandardGame
+from ch_ss.game_engine.core.game import StandardGame
 
 app = typer.Typer()
 

@@ -6,7 +6,7 @@ engine.
 from dataclasses import dataclass, field
 from enum import Enum, auto, unique
 
-from bojio.game_engine.utils.exceptions import IllegalPieceException
+from ch_ss.game_engine.utils.exceptions import IllegalPieceException
 
 
 # Enum of piece/player colors
@@ -33,28 +33,28 @@ class PieceNames(Enum):
 PieceImagePaths = {
     PieceNames.EMPTY: {PieceColors.EMPTY: ""},
     PieceNames.PAWN: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_pawn.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_pawn.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_pawn.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_pawn.png",
     },
     PieceNames.KNIGHT: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_knight.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_knight.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_knight.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_knight.png",
     },
     PieceNames.BISHOP: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_bishop.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_bishop.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_bishop.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_bishop.png",
     },
     PieceNames.ROOK: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_rook.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_rook.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_rook.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_rook.png",
     },
     PieceNames.QUEEN: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_queen.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_queen.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_queen.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_queen.png",
     },
     PieceNames.KING: {
-        PieceColors.WHITE: "./bojio/game_engine/assets/imgs/w_king.png",
-        PieceColors.BLACK: "./bojio/game_engine/assets/imgs/b_king.png",
+        PieceColors.WHITE: "./ch_ss/game_engine/assets/imgs/w_king.png",
+        PieceColors.BLACK: "./ch_ss/game_engine/assets/imgs/b_king.png",
     },
 }
 
