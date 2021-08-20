@@ -11,4 +11,6 @@ exclude =
     *.egg-info,
     .pytest_cache,
     .mypy_cache,
+    .flake8,
     ch_ss/game_engine/core/moves_explorer.py,
+    README.md,

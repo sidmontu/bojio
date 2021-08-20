@@ -14,4 +14,3 @@ script:
   - poetry run pytest
 codecov:
   - codecov
-
