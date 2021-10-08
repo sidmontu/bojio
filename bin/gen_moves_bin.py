@@ -20,7 +20,7 @@ def _main():
       6 |___|___|___|___|___|___|___|___|
         |   |   |   |BN |   |   |   |   |
       5 |___|___|___|___|___|___|___|___|
-        |   |   |   |WN |   |   |   |   |
+        |   |   |   |WN |   |   |WN |   |
       4 |___|___|___|___|___|___|___|___|
         |   |   |   |   |   |   |   |   |
       3 |___|___|___|___|___|___|___|___|
@@ -41,6 +41,7 @@ def _main():
         "e1": Piece(PieceColors.WHITE, PieceNames.KING),
         "e8": Piece(PieceColors.BLACK, PieceNames.KING),
         "f7": Piece(PieceColors.BLACK, PieceNames.PAWN),
+        "g4": Piece(PieceColors.WHITE, PieceNames.KNIGHT),
     }
 
     # Specify players' castling states
