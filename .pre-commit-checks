@@ -6,4 +6,9 @@ up to two arguments (e.g. poetry run black .), and all commands require at
 least one argument.
 '
 
-poetry run $1 $2
+if [[ $1 == "flake8" ]]
+then
+	poetry run flake8
+else
+	poetry run $1 $2
+fi

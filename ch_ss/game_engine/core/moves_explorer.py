@@ -1,3 +1,5 @@
+# flake8: noqa
+
 #!/usr/bin/env python3
 """
 Main class and methods for exploring possible legal moves at varying depths.

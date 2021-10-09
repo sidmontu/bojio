@@ -22,13 +22,21 @@
  * SOFTWARE.
 ************************************************************************************/
 
+#pragma once
+
+#include <inttypes.h>
+
+#include <string>
+#include <iostream>
+#include <chrono> // NOLINT [build/c++11]
+#include <random>
 
 #include "include/config.h"
-#include "include/utils.h"
 
-int main(int argc, char** argv) {
-    BoardState bs = init_standard_game();
-    print_board_state(&bs);
-
-    return 0;
-}
+void print_board_state(BoardState *board_state);
+void benchmark();
+BoardState init_standard_game();
+void _place_piece(bitboard_t bitboard, std::string name, std::string board[64]);
+void _print_board_state_from_string_arr(std::string board[64]);
+bool _is_power_of_two(bitboard_t x);
+unsigned _lod(bitboard_t value);

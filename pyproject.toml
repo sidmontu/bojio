@@ -19,6 +19,7 @@ isort = "^5.9.3"
 flake8 = "^3.9.2"
 flake8-bugbear = "^21.4.3"
 pre-commit = "^2.14.0"
+cpplint = "^1.5.5"
 
 [tool.poetry.scripts]
 play = "bin.play_game_bin:_main"

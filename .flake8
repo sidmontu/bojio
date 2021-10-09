@@ -5,12 +5,3 @@ max-line-length = 120
 max-complexity = 10
 select = C,E,F,W,B,B950
 ignore = E203,E501,W503,C901
-exclude =
-    .git,
-    __pycache__,
-    *.egg-info,
-    .pytest_cache,
-    .mypy_cache,
-    .flake8,
-    ch_ss/game_engine/core/moves_explorer.py,
-    README.md,
