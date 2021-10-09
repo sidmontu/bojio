@@ -1,8 +1,8 @@
+import pprint as pp
 import sys
-from pprint import pprint
 
-from bojio.game_engine.core.Board import Board
-from bojio.game_engine.core.Player import Player
+from ch_ss.game_engine.core.board import Board
+from ch_ss.game_engine.core.player import Player
 
 
 class StandardGame:
@@ -35,7 +35,7 @@ class StandardGame:
         pass
 
     def tick(self) -> None:
-        pprint("[Game-Tick-%d] %s to move:" % (self.move_num, self.to_move))
+        pp.pprint("[Game-Tick-%d] %s to move:" % (self.move_num, self.to_move))
 
         last_move_by = self.to_move
         if self.to_move == "white":
@@ -62,14 +62,14 @@ class StandardGame:
 
         else:
 
-            pprint("Error: game.tick() invalid to_move state = %s" % (self.to_move))
+            pp.pprint("Error: game.tick() invalid to_move state = %s" % (self.to_move))
             sys.exit()
 
         if move == "checkmate":
-            pprint("Checkmate! %s wins!" % (self.to_move))
+            pp.pprint("Checkmate! %s wins!" % (self.to_move))
             sys.exit()
         if move == "stalemate":
-            pprint("Draw, it's a stalemate!")
+            pp.pprint("Draw, it's a stalemate!")
             sys.exit()
 
         if "x" in move:
@@ -78,20 +78,16 @@ class StandardGame:
             self.consecutive_non_capture_moves = 0
 
         if self.consecutive_non_capture_moves == 50:
-            pprint("Draw, it's a stalemate! 50 moves without capture rule triggered.")
+            pp.pprint("Draw, it's a stalemate! 50 moves without capture rule triggered.")
             sys.exit()
 
         self.board.make_move(move, last_move_by)
         self.move_num += 1
 
-    def print_game_state(
-        self, perspective: str = "white", out_file: str = "board_position.jpg"
-    ) -> None:
+    def print_game_state(self, perspective: str = "white", out_file: str = "board_position.jpg") -> None:
         self.board.to_image(flipped=perspective == "black", out_file=out_file)
 
-    def print_game_state_debug(
-        self, pieces0: dict, pieces1: dict, perspective: str, out_file: str
-    ) -> None:
+    def print_game_state_debug(self, pieces0: dict, pieces1: dict, perspective: str, out_file: str) -> None:
         board = Board(board_config="empty")
         for sid, piece in pieces0.items():
             board.put_piece_by_sid(sid, piece)

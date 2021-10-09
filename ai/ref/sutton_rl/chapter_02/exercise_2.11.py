@@ -1,5 +1,7 @@
-import random, math, time
-from math import sqrt, log
+import math
+import random
+import time
+from math import log, sqrt
 
 
 class StationaryEnvironmentModel:
@@ -78,9 +80,7 @@ class GreedyNonStationary:
         return action
 
     def register_reward(self, action_idx, reward):
-        self.qn[action_idx] = self.qn[action_idx] + self.alpha * (
-            reward - self.qn[action_idx]
-        )
+        self.qn[action_idx] = self.qn[action_idx] + self.alpha * (reward - self.qn[action_idx])
 
 
 class GradientBandit:
@@ -125,9 +125,7 @@ class UCB:
         self.t = 0
         self.last_reward = [init_value] * k
         self.num_sel = [0] * k
-        self.A = [
-            100000
-        ] * k  # arbitrarily large action optimality estimate, encourages exploration
+        self.A = [100000] * k  # arbitrarily large action optimality estimate, encourages exploration
 
     def get_action(self):
 
@@ -145,20 +143,14 @@ class UCB:
         self.t += 1
 
         # compute Q_(n+1) = Q_n + 1/N(A) * (R_n - Q_n)
-        qnp1 = self.last_reward[action_idx] + 1 / self.num_sel[action_idx] * (
-            reward - self.last_reward[action_idx]
-        )
+        qnp1 = self.last_reward[action_idx] + 1 / self.num_sel[action_idx] * (reward - self.last_reward[action_idx])
         self.last_reward[action_idx] = qnp1
 
         # update action optimality estimates
-        self.A[action_idx] = qnp1 + self.c * sqrt(
-            log(self.t) / self.num_sel[action_idx]
-        )
+        self.A[action_idx] = qnp1 + self.c * sqrt(log(self.t) / self.num_sel[action_idx])
 
 
-def run_trial(
-    Model, Agent, *args, num_trials=2000, num_timesteps=1000, avg_from=0, avg_to=1000
-):
+def run_trial(Model, Agent, *args, num_trials=2000, num_timesteps=1000, avg_from=0, avg_to=1000):
 
     avg_rewards = []
 
@@ -170,7 +162,7 @@ def run_trial(
 
         rewards = []
 
-        for i in range(num_timesteps):
+        for _ in range(num_timesteps):
 
             action = agent.get_action()
             reward = model.reward(action)
@@ -206,22 +198,14 @@ def test_stationary_cases(k=10):
     for power in range(-7, -1, 1):
         epsilon = 2 ** power
         v = run_trial(StationaryEnvironmentModel, EpsilonGreedy, epsilon, k, 0)
-        print(
-            "[Episilon-Greedy, epsilon = 1/%d] Average Reward = %.3f"
-            % (2 ** (abs(power)), v)
-        )
+        print("[Episilon-Greedy, epsilon = 1/%d] Average Reward = %.3f" % (2 ** (abs(power)), v))
         s += str("epsilon-greedy,%d,%.3f\n" % (power, v))
 
     # run 'optimistic-greedy' experiments
     for power in range(-2, 3, 1):
         initialization = 2 ** power
-        v = run_trial(
-            StationaryEnvironmentModel, GreedyNonStationary, 0.1, initialization, k
-        )
-        print(
-            "[Optimistic-Greedy, initialization = %.5f] Average Reward = %.3f"
-            % (initialization, v)
-        )
+        v = run_trial(StationaryEnvironmentModel, GreedyNonStationary, 0.1, initialization, k)
+        print("[Optimistic-Greedy, initialization = %.5f] Average Reward = %.3f" % (initialization, v))
         s += str("opt-greedy,%d,%.3f\n" % (power, v))
 
     # run 'UCB' experiments
@@ -271,10 +255,7 @@ def test_nonstationary_cases(k=10):
             avg_from=100000,
             avg_to=200000,
         )
-        print(
-            "[Episilon-Greedy, epsilon = 1/%d] Average Reward = %.3f"
-            % (2 ** (abs(power)), v)
-        )
+        print("[Episilon-Greedy, epsilon = 1/%d] Average Reward = %.3f" % (2 ** (abs(power)), v))
         s += str("epsilon-greedy,%d,%.3f\n" % (power, v))
 
     # run 'optimistic-greedy' experiments
@@ -291,10 +272,7 @@ def test_nonstationary_cases(k=10):
             avg_from=100000,
             avg_to=200000,
         )
-        print(
-            "[Optimistic-Greedy, initialization = %.5f] Average Reward = %.3f"
-            % (initialization, v)
-        )
+        print("[Optimistic-Greedy, initialization = %.5f] Average Reward = %.3f" % (initialization, v))
         s += str("opt-greedy,%d,%.3f\n" % (power, v))
 
     # run 'UCB' experiments
