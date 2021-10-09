@@ -1,6 +1,8 @@
-import typer
 from os import makedirs
-from bojio.game_engine.core.Game import StandardGame
+
+import typer
+
+from ch_ss.game_engine.core.game import StandardGame
 
 app = typer.Typer()
 

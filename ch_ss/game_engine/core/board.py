@@ -1,10 +1,12 @@
-import re, sys
-from PIL import Image, ImageDraw, ImageFont
-from pprint import pprint
+import pprint as pp
+import re
+import sys
 
-from bojio.game_engine.core.Square import Square
-from bojio.game_engine.core.Piece import Piece, PieceColors, PieceNames
-from bojio.game_engine.utils.utils import COLUMN_ALPHABETS
+from PIL import Image, ImageDraw, ImageFont
+
+from ch_ss.game_engine.core.piece import Piece, PieceColors, PieceNames
+from ch_ss.game_engine.core.square import Square
+from ch_ss.game_engine.utils.utils import COLUMN_ALPHABETS
 
 
 class Board:
@@ -12,7 +14,7 @@ class Board:
         sqs = {}
         for j in range(8):
             for i, alphabet in enumerate(COLUMN_ALPHABETS):
-                sq = Square(xy=(7 - j, i), square_id=alphabet + str(j + 1))
+                sq = Square(x_y=(7 - j, i), square_id=alphabet + str(j + 1))
                 sqs[alphabet + str(j + 1)] = sq
         self.squares = sqs
 
@@ -28,24 +30,18 @@ class Board:
         self.board_len = 800
         self.margin = 10
         self.colors = ["#23de74", "#f7f7d5"]
-        self.font = ImageFont.truetype("bojio/game_engine/assets/fonts/arial.ttf", 16)
+        self.font = ImageFont.truetype("ch_ss/game_engine/assets/fonts/arial.ttf", 16)
 
         # calculated settings for printing board image -- don't change this
-        self.w, self.h = self.board_len + (self.margin * 2), self.board_len + (
-            self.margin * 2
-        )  # margin 10px each
-        self.square_len = self.board_len / 8
+        self.w, self.h = self.board_len + (self.margin * 2), self.board_len + (self.margin * 2)  # margin 10px each
+        self.square_len = self.board_len // 8
 
     def init_standard(self) -> None:
 
         # white/black pawns
         for alphabet in ["a", "b", "c", "d", "e", "f", "g", "h"]:
-            self.put_piece_by_sid(
-                alphabet + "2", Piece(PieceColors.WHITE, PieceNames.PAWN)
-            )
-            self.put_piece_by_sid(
-                alphabet + "7", Piece(PieceColors.BLACK, PieceNames.PAWN)
-            )
+            self.put_piece_by_sid(alphabet + "2", Piece(PieceColors.WHITE, PieceNames.PAWN))
+            self.put_piece_by_sid(alphabet + "7", Piece(PieceColors.BLACK, PieceNames.PAWN))
 
         # white pieces
         self.put_piece_by_sid("a1", Piece(PieceColors.WHITE, PieceNames.ROOK))
@@ -79,9 +75,7 @@ class Board:
 
     def get_piece_by_sid(self, sid: str) -> Piece:
 
-        assert sid in self.squares, str(
-            "Error: get_pieces_by_sid() called but sid does not exist: %s" % (sid)
-        )
+        assert sid in self.squares, str("Error: get_pieces_by_sid() called but sid does not exist: %s" % (sid))
         return self.squares[sid].piece
 
     def clear_square_by_sid(self, square_id: str) -> None:
@@ -90,92 +84,97 @@ class Board:
     def put_piece_by_sid(self, square_id: str, piece: Piece) -> None:
         self.squares[square_id].change_piece(piece)
 
-    def make_move(self, move: str, color: str) -> None:
-        pprint("Attempting to make move %s" % (move))
-        if move[0] in ["R", "B", "N", "Q", "K"]:  # non-pawn moves
-            sq_from = move[1:3]
-            if move[3] == "x":
-                sq_to = move[4:6]
-            else:
-                sq_to = move[3:5]
-            piece = self.get_piece_by_sid(sq_from)
-            self.clear_square_by_sid(sq_from)
-            self.clear_square_by_sid(sq_to)
-            self.put_piece_by_sid(sq_to, piece)
-        elif move == "O-O":  # castling move
-            row = 8 if color == "black" else 1
-            rsq_from = str("h%d" % (row))
-            ksq_from = str("e%d" % (row))
-            rsq_to = str("f%d" % (row))
-            ksq_to = str("g%d" % (row))
-            rook = self.get_piece_by_sid(rsq_from)
-            king = self.get_piece_by_sid(ksq_from)
-            self.clear_square_by_sid(rsq_from)
-            self.clear_square_by_sid(ksq_from)
-            self.put_piece_by_sid(rsq_to, rook)
-            self.put_piece_by_sid(ksq_to, king)
-        elif move == "O-O-O":
-            row = 8 if color == "black" else 1
-            rsq_from = str("a%d" % (row))
-            ksq_from = str("e%d" % (row))
-            rsq_to = str("d%d" % (row))
-            ksq_to = str("c%d" % (row))
-            rook = self.get_piece_by_sid(rsq_from)
-            king = self.get_piece_by_sid(ksq_from)
-            self.clear_square_by_sid(rsq_from)
-            self.clear_square_by_sid(ksq_from)
-            self.put_piece_by_sid(rsq_to, rook)
-            self.put_piece_by_sid(ksq_to, king)
-        else:  # must be a pawn move
-            sq_from = move[0:2]
-            piece = self.get_piece_by_sid(sq_from)
-            if "=" in move:  # pawn promotion
-                promoted_to = move.split("=")[1]
-                color = PieceColors.BLACK if color == "black" else PieceColors.WHITE
-                if promoted_to == "Q":
-                    piece = Piece(color, PieceNames.QUEEN)
-                elif promoted_to == "R":
-                    piece = Piece(color, PieceNames.ROOK)
-                elif promoted_to == "B":
-                    piece = Piece(color, PieceNames.BISHOP)
-                elif promoted_to == "N":
-                    piece = Piece(color, PieceNames.KNIGHT)
-                else:
-                    print("Error: unknown piece to promote pawn to: %s" % (promoted_to))
-                    sys.exit()
+    def make_non_pawn_moves(self, move):
+        sq_from = move[1:3]
+        if move[3] == "x":
+            sq_to = move[4:6]
+        else:
+            sq_to = move[3:5]
+        piece = self.get_piece_by_sid(sq_from)
+        self.clear_square_by_sid(sq_from)
+        self.clear_square_by_sid(sq_to)
+        self.put_piece_by_sid(sq_to, piece)
 
-            if move[2] == "x":
-                sq_to = move[3:5]
-                captured_piece = self.get_piece_by_sid(sq_to)
-                if (
-                    captured_piece.name == PieceNames.EMPTY
-                ):  # must be an en-passant capture
-                    pawn_to_capture = str("%s%s" % (sq_to[0], sq_from[1]))
-                    assert (
-                        self.get_piece_by_sid(pawn_to_capture).name == PieceNames.PAWN
-                    ), str(
-                        "Error: en-passant capture detected, but pawn-to-capture not found at %s"
-                        % (pawn_to_capture)
-                    )
-                    self.clear_square_by_sid(sq_from)
-                    self.clear_square_by_sid(pawn_to_capture)
-                    self.put_piece_by_sid(sq_to, piece)
-                else:
-                    self.clear_square_by_sid(sq_from)
-                    self.clear_square_by_sid(sq_to)
-                    self.put_piece_by_sid(sq_to, piece)
+    def make_o_o_moves(self, color):
+        row = 8 if color == "black" else 1
+        rsq_from = str("h%d" % (row))
+        ksq_from = str("e%d" % (row))
+        rsq_to = str("f%d" % (row))
+        ksq_to = str("g%d" % (row))
+        rook = self.get_piece_by_sid(rsq_from)
+        king = self.get_piece_by_sid(ksq_from)
+        self.clear_square_by_sid(rsq_from)
+        self.clear_square_by_sid(ksq_from)
+        self.put_piece_by_sid(rsq_to, rook)
+        self.put_piece_by_sid(ksq_to, king)
+
+    def make_o_o_o_moves(self, color):
+        row = 8 if color == "black" else 1
+        rsq_from = str("a%d" % (row))
+        ksq_from = str("e%d" % (row))
+        rsq_to = str("d%d" % (row))
+        ksq_to = str("c%d" % (row))
+        rook = self.get_piece_by_sid(rsq_from)
+        king = self.get_piece_by_sid(ksq_from)
+        self.clear_square_by_sid(rsq_from)
+        self.clear_square_by_sid(ksq_from)
+        self.put_piece_by_sid(rsq_to, rook)
+        self.put_piece_by_sid(ksq_to, king)
+
+    def make_pawn_moves(self, move, color):
+        sq_from = move[0:2]
+        piece = self.get_piece_by_sid(sq_from)
+        if "=" in move:  # pawn promotion
+            promoted_to = move.split("=")[1]
+            color = PieceColors.BLACK if color == "black" else PieceColors.WHITE
+            if promoted_to == "Q":
+                piece = Piece(color, PieceNames.QUEEN)
+            elif promoted_to == "R":
+                piece = Piece(color, PieceNames.ROOK)
+            elif promoted_to == "B":
+                piece = Piece(color, PieceNames.BISHOP)
+            elif promoted_to == "N":
+                piece = Piece(color, PieceNames.KNIGHT)
             else:
-                sq_to = move[2:4]
+                print("Error: unknown piece to promote pawn to: %s" % (promoted_to))
+                sys.exit()
+
+        if move[2] == "x":
+            sq_to = move[3:5]
+            captured_piece = self.get_piece_by_sid(sq_to)
+            if captured_piece.name == PieceNames.EMPTY:  # must be an en-passant capture
+                pawn_to_capture = str("%s%s" % (sq_to[0], sq_from[1]))
+                assert self.get_piece_by_sid(pawn_to_capture).name == PieceNames.PAWN, str(
+                    "Error: en-passant capture detected, but pawn-to-capture not found at %s" % (pawn_to_capture)
+                )
+                self.clear_square_by_sid(sq_from)
+                self.clear_square_by_sid(pawn_to_capture)
+                self.put_piece_by_sid(sq_to, piece)
+            else:
                 self.clear_square_by_sid(sq_from)
                 self.clear_square_by_sid(sq_to)
                 self.put_piece_by_sid(sq_to, piece)
+        else:
+            sq_to = move[2:4]
+            self.clear_square_by_sid(sq_from)
+            self.clear_square_by_sid(sq_to)
+            self.put_piece_by_sid(sq_to, piece)
 
-    def to_image(
-        self, out_file: str = "board_position.jpg", flipped: bool = False
-    ) -> None:
+    def make_move(self, move: str, color: str) -> None:
+        pp.pprint("Attempting to make move %s" % (move))
+        if move[0] in ["R", "B", "N", "Q", "K"]:  # non-pawn moves
+            self.make_non_pawn_moves(move)
+        elif move == "O-O":  # castling move
+            self.make_o_o_moves(color)
+        elif move == "O-O-O":
+            self.make_o_o_o_moves(color)
+        else:  # must be a pawn move
+            self.make_pawn_moves(move, color)
+
+    def to_image(self, out_file: str = "board_position.jpg", flipped: bool = False) -> None:
 
         # global settings
-        board_len, margin, colors, font = (
+        _, margin, colors, font = (
             self.board_len,
             self.margin,
             self.colors,
@@ -190,14 +189,10 @@ class Board:
         d = ImageDraw.Draw(img)
 
         # create board with pieces
-        row = margin
-        col = margin
-        c = 1
-
         for square_id, square in self.squares.items():
 
             # calculate (x,y) coordinates, and colors
-            i, j = square.xy
+            i, j = square.x_y
             if flipped:
                 top_left_x = margin + (7 - j) * square_len
                 top_left_y = margin + (7 - i) * square_len
@@ -219,12 +214,14 @@ class Board:
                 piece_img = Image.open(square.piece.img_fpath)
                 px, py = piece_img.size
 
-                # we need to resize it programmatically, since each piece has different height/width
+                # we need to resize it programmatically, since each piece has
+                # different height/width
                 ratio = py / 70
                 px, py = int(px / ratio), 70
                 piece_img = piece_img.resize((px, py))
 
-                # calculate the location of the piece based on current square and piece image's height/width
+                # calculate the location of the piece based on current square
+                # and piece image's height/width
                 loc_x = int(top_left_x + (square_len / 2) - int(px / 2))
                 loc_y = int(top_left_y + (square_len / 2) - int(py / 2))
                 img.paste(piece_img, (loc_x, loc_y), mask=piece_img)
