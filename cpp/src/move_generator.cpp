@@ -26,9 +26,27 @@
 #include "include/config.h"
 #include "include/utils.h"
 
+std::vector<std::string> move_gen(BoardState* board_state, bool white_turn) {
+    std::vector<std::string> legal_moves;
+
+    // pawn move forward one
+    if (white_turn) {
+        for (bitboard_t pawn : board_state->white_pawns) {
+            printf("0x%" PRIu64 "\n", pawn);
+        }
+    }
+
+    return legal_moves;
+}
+
 int main(int argc, char** argv) {
     BoardState bs = init_standard_game();
     print_board_state(&bs);
+
+    std::vector<std::string> legal_moves = move_gen(&bs, true);
+
+    // print legal moves
+    for (std::string move : legal_moves) printf("Legal move: %s\n", move.c_str());
 
     return 0;
 }

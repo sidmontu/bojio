@@ -49,7 +49,7 @@ void _place_piece(bitboard_t bitboard, std::string name, std::string board[64]) 
  * @param board_state Pointer to board state of type BoardState.
  * @return void.
  */
-void print_board_state(BoardState *board_state) {
+void print_board_state(BoardState* board_state) {
     std::string board[64];
 
     // init the board
