@@ -39,4 +39,4 @@ BoardState init_standard_game();
 void _place_piece(bitboard_t bitboard, std::string name, std::string board[64]);
 void _print_board_state_from_string_arr(std::string board[64]);
 bool _is_power_of_two(bitboard_t x);
-unsigned _lod(bitboard_t value);
+unsigned _lod(bitboard_t value, unsigned total_bits);

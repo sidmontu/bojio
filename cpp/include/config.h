@@ -31,17 +31,18 @@
 
 typedef uint64_t bitboard_t;
 
+typedef struct PlayerState {
+    bitboard_t pieces;
+    bitboard_t king;
+    std::vector<bitboard_t> queens;
+    std::vector<bitboard_t> rooks;
+    std::vector<bitboard_t> bishops;
+    std::vector<bitboard_t> knights;
+    std::vector<bitboard_t> pawns;
+} PlayerState;
+
 typedef struct BoardState {
-    bitboard_t black_king;
-    std::vector<bitboard_t> black_queens;
-    std::vector<bitboard_t> black_rooks;
-    std::vector<bitboard_t> black_bishops;
-    std::vector<bitboard_t> black_knights;
-    std::vector<bitboard_t> black_pawns;
-    bitboard_t white_king;
-    std::vector<bitboard_t> white_queens;
-    std::vector<bitboard_t> white_rooks;
-    std::vector<bitboard_t> white_bishops;
-    std::vector<bitboard_t> white_knights;
-    std::vector<bitboard_t> white_pawns;
+    bool isWhiteMove;
+    PlayerState black;
+    PlayerState white;
 } BoardState;

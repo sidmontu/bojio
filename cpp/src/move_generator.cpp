@@ -31,7 +31,7 @@ std::vector<std::string> move_gen(BoardState* board_state, bool white_turn) {
 
     // pawn move forward one
     if (white_turn) {
-        for (bitboard_t pawn : board_state->white_pawns) {
+        for (bitboard_t pawn : board_state->white.pawns) {
             printf("0x%" PRIu64 "\n", pawn);
         }
     }

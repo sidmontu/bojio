@@ -27,7 +27,7 @@
 
 void _place_piece(bitboard_t bitboard, std::string name, std::string board[64]) {
     if (bitboard && _is_power_of_two(bitboard)) {
-        unsigned idx = _lod(bitboard);
+        unsigned idx = _lod(bitboard, 64);
         if (board[idx] != " ") {
             printf("Error: invalid board configuration, two pieces on same square.\n");
             printf("\tExisting piece = %s, new piece = %s, bitboard = ",
@@ -56,58 +56,58 @@ void print_board_state(BoardState* board_state) {
     for (int i = 0; i < 64; ++i) board[i] = ' ';
 
     // evaluate black king
-    _place_piece(board_state->black_king, "B-K", board);
+    _place_piece(board_state->black.king, "B-K", board);
 
     // evaluate white king
-    _place_piece(board_state->white_king, "W-K", board);
+    _place_piece(board_state->white.king, "W-K", board);
 
     // evaluate black queens
-    for (bitboard_t queen : board_state->black_queens) {
+    for (bitboard_t queen : board_state->black.queens) {
         _place_piece(queen, "B-Q", board);
     }
 
     // evaluate white queens
-    for (bitboard_t queen : board_state->white_queens) {
+    for (bitboard_t queen : board_state->white.queens) {
         _place_piece(queen, "W-Q", board);
     }
 
     // evaluate black pawns
-    for (bitboard_t pawn : board_state->black_pawns) {
+    for (bitboard_t pawn : board_state->black.pawns) {
         _place_piece(pawn, "B-P", board);
     }
 
     // evaluate white pawns
-    for (bitboard_t pawn : board_state->white_pawns) {
+    for (bitboard_t pawn : board_state->white.pawns) {
         _place_piece(pawn, "W-P", board);
     }
 
     // evaluate black rooks
-    for (bitboard_t rook : board_state->black_rooks) {
+    for (bitboard_t rook : board_state->black.rooks) {
         _place_piece(rook, "B-R", board);
     }
 
     // evaluate white rooks
-    for (bitboard_t rook : board_state->white_rooks) {
+    for (bitboard_t rook : board_state->white.rooks) {
         _place_piece(rook, "W-R", board);
     }
 
     // evaluate black knights
-    for (bitboard_t knight : board_state->black_knights) {
+    for (bitboard_t knight : board_state->black.knights) {
         _place_piece(knight, "B-N", board);
     }
 
     // evaluate black knights
-    for (bitboard_t knight : board_state->white_knights) {
+    for (bitboard_t knight : board_state->white.knights) {
         _place_piece(knight, "W-N", board);
     }
 
     // evaluate black bishops
-    for (bitboard_t bishop : board_state->black_bishops) {
+    for (bitboard_t bishop : board_state->black.bishops) {
         _place_piece(bishop, "B-B", board);
     }
 
     // evaluate white bishops
-    for (bitboard_t bishop : board_state->white_bishops) {
+    for (bitboard_t bishop : board_state->white.bishops) {
         _place_piece(bishop, "W-B", board);
     }
 
@@ -152,8 +152,8 @@ bool _is_power_of_two(bitboard_t x) {
     return (x != 0) && ((x & (x - 1)) == 0);
 }
 
-unsigned _lod(bitboard_t value) {
-    return 63 - __builtin_clzl(value);
+unsigned _lod(bitboard_t value, unsigned total_bits) {
+    return (total_bits-1) - (unsigned)__builtin_clzl(value);
 }
 
 void benchmark() {
@@ -177,7 +177,7 @@ void benchmark() {
     auto t1 = high_resolution_clock::now();
     for (int j = 0; j < ITERS; ++j)
         for (int i = 0; i < NUM_VALS; ++i)
-            results_0[i] = _lod(vals[i]);
+            results_0[i] = _lod(vals[i], 64);
     auto t2 = high_resolution_clock::now();
 
     duration<double, std::milli> ms_double = t2 - t1;
@@ -189,26 +189,32 @@ BoardState init_standard_game() {
     BoardState bs;
 
     // init black pieces
-    bs.black_rooks.push_back((bitboard_t)1 << 63);
-    bs.black_knights.push_back((bitboard_t)1 << 62);
-    bs.black_bishops.push_back((bitboard_t)1 << 61);
-    bs.black_king = (bitboard_t)1 << 60;
-    bs.black_queens.push_back((bitboard_t)1 << 59);
-    bs.black_bishops.push_back((bitboard_t)1 << 58);
-    bs.black_knights.push_back((bitboard_t)1 << 57);
-    bs.black_rooks.push_back((bitboard_t)1 << 56);
-    for (int i = 55; i >= 48; --i) bs.black_pawns.push_back((bitboard_t)1 << i);
+    bitboard_t black_pieces = 0;
+    for (unsigned i = 63; i >= 48; --i) black_pieces += ((bitboard_t)1 << i);
+    bs.black.pieces = black_pieces;
+    bs.black.rooks.push_back((bitboard_t)1 << 63);
+    bs.black.knights.push_back((bitboard_t)1 << 62);
+    bs.black.bishops.push_back((bitboard_t)1 << 61);
+    bs.black.king = (bitboard_t)1 << 60;
+    bs.black.queens.push_back((bitboard_t)1 << 59);
+    bs.black.bishops.push_back((bitboard_t)1 << 58);
+    bs.black.knights.push_back((bitboard_t)1 << 57);
+    bs.black.rooks.push_back((bitboard_t)1 << 56);
+    for (int i = 55; i >= 48; --i) bs.black.pawns.push_back((bitboard_t)1 << i);
 
     // init white pieces
-    bs.white_rooks.push_back((bitboard_t)1 << 0);
-    bs.white_knights.push_back((bitboard_t)1 << 1);
-    bs.white_bishops.push_back((bitboard_t)1 << 2);
-    bs.white_queens.push_back((bitboard_t)1 << 3);
-    bs.white_king = (bitboard_t)1 << 4;
-    bs.white_bishops.push_back((bitboard_t)1 << 5);
-    bs.white_knights.push_back((bitboard_t)1 << 6);
-    bs.white_rooks.push_back((bitboard_t)1 << 7);
-    for (int i = 8; i < 16; ++i) bs.white_pawns.push_back((bitboard_t)1 << i);
+    bitboard_t white_pieces = 0;
+    for (unsigned i = 0; i < 16; ++i) white_pieces += ((bitboard_t)1 << i);
+    bs.white.pieces = white_pieces;
+    bs.white.rooks.push_back((bitboard_t)1 << 0);
+    bs.white.knights.push_back((bitboard_t)1 << 1);
+    bs.white.bishops.push_back((bitboard_t)1 << 2);
+    bs.white.queens.push_back((bitboard_t)1 << 3);
+    bs.white.king = (bitboard_t)1 << 4;
+    bs.white.bishops.push_back((bitboard_t)1 << 5);
+    bs.white.knights.push_back((bitboard_t)1 << 6);
+    bs.white.rooks.push_back((bitboard_t)1 << 7);
+    for (int i = 8; i < 16; ++i) bs.white.pawns.push_back((bitboard_t)1 << i);
 
     return bs;
 }
